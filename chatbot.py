@@ -66,33 +66,19 @@ class ChatbotProcessor:
             'help': ['help', 'guide', 'assist', 'support', 'explain', 'what can you do', 'how do I', 'instructions']
         }
         
-        # Define common team names and variations
+        # Define IPL 2025 team names and variations
         self.cricket_teams = {
-            # International teams
-            'india': ['india', 'indian', 'ind', 'men in blue', 'team india', 'bcci'],
-            'australia': ['australia', 'australian', 'aus', 'aussies', 'baggy greens'],
-            'england': ['england', 'english', 'eng', 'three lions'],
-            'new zealand': ['new zealand', 'nz', 'kiwis', 'black caps'],
-            'pakistan': ['pakistan', 'pak', 'men in green', 'shaheens'],
-            'south africa': ['south africa', 'sa', 'proteas', 'saffers'],
-            'west indies': ['west indies', 'wi', 'windies', 'caribbean'],
-            'sri lanka': ['sri lanka', 'sl', 'lanka', 'lions'],
-            'bangladesh': ['bangladesh', 'ban', 'bd', 'tigers'],
-            'afghanistan': ['afghanistan', 'afg'],
-            'zimbabwe': ['zimbabwe', 'zim', 'chevrons'],
-            'ireland': ['ireland', 'ire'],
-            
-            # IPL 2025 teams
-            'Mumbai Indians': ['mumbai', 'mumbai indians', 'mi', 'mumbai team', 'paltan'],
-            'Chennai Super Kings': ['chennai', 'chennai super kings', 'csk', 'chennai team', 'super kings'],
-            'Royal Challengers Bengaluru': ['bangalore', 'bengaluru', 'royal challengers', 'rcb', 'bengaluru team', 'royal challengers bengaluru'],
-            'Kolkata Knight Riders': ['kolkata', 'kolkata knight riders', 'kkr', 'knight riders', 'kolkata team'],
-            'Delhi Capitals': ['delhi', 'delhi capitals', 'dc', 'capitals', 'delhi team'],
-            'Punjab Kings': ['punjab', 'punjab kings', 'pbks', 'punjab team', 'kings'],
-            'Rajasthan Royals': ['rajasthan', 'rajasthan royals', 'rr', 'royals', 'rajasthan team'],
-            'Sunrisers Hyderabad': ['hyderabad', 'sunrisers', 'sunrisers hyderabad', 'srh', 'hyderabad team'],
-            'Gujarat Titans': ['gujarat', 'gujarat titans', 'gt', 'titans', 'gujarat team'],
-            'Lucknow Super Giants': ['lucknow', 'lucknow super giants', 'lsg', 'super giants', 'lucknow team']
+            # IPL 2025 teams only - focusing exclusively on IPL
+            'Mumbai Indians': ['mumbai', 'mumbai indians', 'mi', 'mumbai team', 'paltan', 'rohit team', 'ambani team'],
+            'Chennai Super Kings': ['chennai', 'chennai super kings', 'csk', 'chennai team', 'super kings', 'thala team', 'dhoni team', 'yellove'],
+            'Royal Challengers Bengaluru': ['bangalore', 'bengaluru', 'royal challengers', 'rcb', 'bengaluru team', 'royal challengers bengaluru', 'kohli team'],
+            'Kolkata Knight Riders': ['kolkata', 'kolkata knight riders', 'kkr', 'knight riders', 'kolkata team', 'srk team', 'gambhir team'],
+            'Delhi Capitals': ['delhi', 'delhi capitals', 'dc', 'capitals', 'delhi team', 'pant team', 'rishabh team'],
+            'Punjab Kings': ['punjab', 'punjab kings', 'pbks', 'punjab team', 'kings', 'preity team', 'mohali team'],
+            'Rajasthan Royals': ['rajasthan', 'rajasthan royals', 'rr', 'royals', 'rajasthan team', 'sanju team', 'samson team'],
+            'Sunrisers Hyderabad': ['hyderabad', 'sunrisers', 'sunrisers hyderabad', 'srh', 'hyderabad team', 'orange army'],
+            'Gujarat Titans': ['gujarat', 'gujarat titans', 'gt', 'titans', 'gujarat team', 'hardik team', 'ahmedabad team'],
+            'Lucknow Super Giants': ['lucknow', 'lucknow super giants', 'lsg', 'super giants', 'lucknow team', 'kl team', 'rahul team']
         }
         
         # Define responses for basic intents
@@ -113,9 +99,9 @@ class ChatbotProcessor:
                 "Glad I could help! Any other cricket questions?"
             ],
             'help': [
-                "I can help you with cricket match predictions, team statistics, player performance analysis, and betting odds. Try asking something like 'Who will win India vs Australia?' or 'What are the odds for England vs New Zealand?'",
-                "You can ask me about match predictions, team form, head-to-head records, player stats, and current betting odds. For example, try 'Predict the outcome of Pakistan vs South Africa' or 'What's the form of Virat Kohli?'",
-                "I'm your cricket betting analysis assistant. I can provide match predictions, analyze team statistics, evaluate player performance, and show current betting odds. Just ask me a question about any upcoming cricket match!"
+                "I can help you with IPL match predictions, team statistics, player performance analysis, and betting odds. Try asking something like 'Who will win Mumbai Indians vs Chennai Super Kings?' or 'What are the odds for Royal Challengers Bengaluru vs Kolkata Knight Riders?'",
+                "You can ask me about IPL match predictions, team form, head-to-head records, player stats, and current betting odds. For example, try 'Predict the outcome of Delhi Capitals vs Rajasthan Royals' or 'What's the form of Virat Kohli in IPL 2025?'",
+                "I'm your IPL 2025 betting analysis assistant. I can provide match predictions, analyze team statistics, evaluate player performance, and show current betting odds. Just ask me a question about any IPL 2025 match!"
             ],
             'default': [
                 "I'm not sure I understand. Could you rephrase your question about cricket?",
@@ -461,19 +447,22 @@ class ChatbotProcessor:
         Returns:
             str: Response to the query
         """
-        # Define some famous cricket players
+        # Define IPL star players
         famous_players = {
-            "virat kohli": {"team": "India", "role": "Batsman"},
-            "rohit sharma": {"team": "India", "role": "Batsman"},
-            "jasprit bumrah": {"team": "India", "role": "Bowler"},
-            "steve smith": {"team": "Australia", "role": "Batsman"},
-            "pat cummins": {"team": "Australia", "role": "Bowler"},
-            "joe root": {"team": "England", "role": "Batsman"},
-            "ben stokes": {"team": "England", "role": "All-rounder"},
-            "kane williamson": {"team": "New Zealand", "role": "Batsman"},
-            "babar azam": {"team": "Pakistan", "role": "Batsman"},
-            "kagiso rabada": {"team": "South Africa", "role": "Bowler"},
-            "rashid khan": {"team": "Afghanistan", "role": "Bowler"}
+            "virat kohli": {"team": "Royal Challengers Bengaluru", "role": "Batsman"},
+            "rohit sharma": {"team": "Mumbai Indians", "role": "Batsman"},
+            "jasprit bumrah": {"team": "Mumbai Indians", "role": "Bowler"},
+            "ms dhoni": {"team": "Chennai Super Kings", "role": "Wicket-keeper"},
+            "ravindra jadeja": {"team": "Chennai Super Kings", "role": "All-rounder"},
+            "hardik pandya": {"team": "Mumbai Indians", "role": "All-rounder"},
+            "kl rahul": {"team": "Lucknow Super Giants", "role": "Batsman"},
+            "rishabh pant": {"team": "Delhi Capitals", "role": "Wicket-keeper"},
+            "rashid khan": {"team": "Gujarat Titans", "role": "Bowler"},
+            "shreyas iyer": {"team": "Kolkata Knight Riders", "role": "Batsman"},
+            "sanju samson": {"team": "Rajasthan Royals", "role": "Wicket-keeper"},
+            "suryakumar yadav": {"team": "Mumbai Indians", "role": "Batsman"},
+            "shikhar dhawan": {"team": "Punjab Kings", "role": "Batsman"},
+            "faf du plessis": {"team": "Royal Challengers Bengaluru", "role": "Batsman"}
         }
         
         # Try to extract player name from query
@@ -530,11 +519,13 @@ class ChatbotProcessor:
         response += f"Recent form: {recent_form}\n"
         response += f"Fitness status: {np.random.choice(['Fully fit', 'Minor injury concern', 'Recently recovered', 'Managing workload'])}\n\n"
         
-        # Performance against specific teams
-        response += "Performance against top teams:\n"
-        top_teams = ["Australia", "England", "India"] if player_info['team'] not in ["Australia", "England", "India"] else ["New Zealand", "South Africa", "Pakistan"]
+        # Performance against specific IPL teams
+        response += "Performance against top IPL teams:\n"
+        ipl_teams = ["Mumbai Indians", "Chennai Super Kings", "Royal Challengers Bengaluru"] 
+        if player_info['team'] in ipl_teams:
+            ipl_teams = ["Kolkata Knight Riders", "Delhi Capitals", "Punjab Kings"]
         
-        for team in top_teams:
+        for team in ipl_teams:
             if player_info['role'] in ["Batsman", "All-rounder"]:
                 avg_vs_team = batting_avg * np.random.uniform(0.8, 1.2)
                 response += f"- vs {team}: Batting avg. {avg_vs_team:.2f}\n"
@@ -631,32 +622,42 @@ class ChatbotProcessor:
         Returns:
             str: Response to the query
         """
-        # Define some famous cricket venues
+        # Define IPL venues
         venues = {
-            "melbourne cricket ground": {
-                "location": "Melbourne, Australia",
-                "capacity": "100,024",
-                "known_for": "Boxing Day Test matches, fast and bouncy pitch"
+            "wankhede stadium": {
+                "location": "Mumbai, India",
+                "capacity": "33,108",
+                "known_for": "Home of Mumbai Indians, batting friendly pitch with seam movement under lights"
             },
-            "lord's": {
-                "location": "London, England",
-                "capacity": "30,000",
-                "known_for": "Home of Cricket, favorable for swing bowling"
+            "m. a. chidambaram stadium": {
+                "location": "Chennai, India",
+                "capacity": "50,000",
+                "known_for": "Home of Chennai Super Kings, spin-friendly tracks with low bounce"
             },
             "eden gardens": {
                 "location": "Kolkata, India",
                 "capacity": "66,000",
-                "known_for": "Passionate crowd, spin-friendly pitch"
+                "known_for": "Home of Kolkata Knight Riders, passionate crowd, balanced pitch"
             },
-            "wanderers stadium": {
-                "location": "Johannesburg, South Africa",
-                "capacity": "34,000",
-                "known_for": "High altitude, fast and bouncy pitch"
+            "m. chinnaswamy stadium": {
+                "location": "Bengaluru, India",
+                "capacity": "40,000",
+                "known_for": "Home of Royal Challengers Bengaluru, high-scoring venue with small boundaries"
             },
-            "sydney cricket ground": {
-                "location": "Sydney, Australia",
-                "capacity": "48,000",
-                "known_for": "New Year's Test matches, good for spin bowling later in the match"
+            "arun jaitley stadium": {
+                "location": "Delhi, India",
+                "capacity": "41,820",
+                "known_for": "Home of Delhi Capitals, slow pitch that assists spinners"
+            },
+            "narendra modi stadium": {
+                "location": "Ahmedabad, India", 
+                "capacity": "132,000",
+                "known_for": "Home of Gujarat Titans, world's largest cricket stadium, balanced pitch with good bounce"
+            },
+            "sawai mansingh stadium": {
+                "location": "Jaipur, India",
+                "capacity": "30,000",
+                "known_for": "Home of Rajasthan Royals, batting-friendly pitch with good bounce"
             }
         }
         
@@ -701,12 +702,13 @@ class ChatbotProcessor:
             response += f"- Average first innings score: {np.random.randint(250, 350)}\n"
         
         # Historical stats
-        response += "\nHistorical statistics:\n"
+        response += "\nIPL Team Performance at this Venue:\n"
         
-        # Generate realistic stats for teams
-        teams = ["India", "Australia", "England", "South Africa", "Pakistan"]
+        # Generate realistic stats for IPL teams
+        teams = ["Mumbai Indians", "Chennai Super Kings", "Royal Challengers Bengaluru", 
+                "Kolkata Knight Riders", "Delhi Capitals"]
         for team in teams:
-            matches_played = np.random.randint(5, 20)
+            matches_played = np.random.randint(5, 15)
             matches_won = np.random.randint(1, matches_played)
             win_percentage = (matches_won / matches_played) * 100
             
