@@ -318,12 +318,24 @@ def compare_odds_sources(team1, team2):
     # Get the baseline odds first
     match_odds = get_odds_by_match(team1, team2)
     
+    # Default odds in case no match is found
+    default_odds = {
+        'team1': team1,
+        'team2': team2,
+        'team1_odds': 2.0,
+        'team2_odds': 2.0,
+        'draw_odds': 5.0
+    }
+    
     if not match_odds:
         # Match not found, try to find the upcoming match
         upcoming_matches = get_upcoming_matches()
+        match_found = False
+        
         for match in upcoming_matches:
             if (match['team1'] == team1 and match['team2'] == team2) or \
                (match['team1'] == team2 and match['team2'] == team1):
+                match_found = True
                 # Match found in upcoming matches but not in odds data
                 # Simulation will be based on team strength ratings
                 
@@ -368,6 +380,11 @@ def compare_odds_sources(team1, team2):
                     'team2_odds': team2_base_odds,
                     'draw_odds': draw_base_odds
                 }
+                break
+        
+        # If no match was found in upcoming matches, use default odds
+        if not match_found:
+            match_odds = default_odds
     
     sources = ['Bet365', 'Betfair', 'Ladbrokes', 'William Hill', 'Paddy Power']
     comparison = {}
