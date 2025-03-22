@@ -200,7 +200,7 @@ with tab2:
                     suggested_factors.append("Home advantage")
                 elif "Chennai" in venue and team1 == "Chennai Super Kings":
                     suggested_factors.append("Home advantage")
-                elif "Chinnaswamy" in venue and team1 == "Royal Challengers Bangalore":
+                elif "Chinnaswamy" in venue and team1 == "Royal Challengers Bengaluru":
                     suggested_factors.append("Home advantage")
                 elif "Eden Gardens" in venue and team1 == "Kolkata Knight Riders":
                     suggested_factors.append("Home advantage")
@@ -209,7 +209,7 @@ with tab2:
                     suggested_factors.append("Home advantage")
                 elif "Chennai" in venue and team2 == "Chennai Super Kings":
                     suggested_factors.append("Home advantage")
-                elif "Chinnaswamy" in venue and team2 == "Royal Challengers Bangalore":
+                elif "Chinnaswamy" in venue and team2 == "Royal Challengers Bengaluru":
                     suggested_factors.append("Home advantage")
                 elif "Eden Gardens" in venue and team2 == "Kolkata Knight Riders":
                     suggested_factors.append("Home advantage")
@@ -637,7 +637,7 @@ with tab4:
     if st.session_state.data_loaded:
         # Get IPL teams
         ipl_teams = [
-            "Mumbai Indians", "Chennai Super Kings", "Royal Challengers Bangalore", 
+            "Mumbai Indians", "Chennai Super Kings", "Royal Challengers Bengaluru", 
             "Kolkata Knight Riders", "Delhi Capitals", "Punjab Kings", 
             "Rajasthan Royals", "Sunrisers Hyderabad", "Gujarat Titans", 
             "Lucknow Super Giants"

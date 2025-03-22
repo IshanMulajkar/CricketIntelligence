@@ -55,7 +55,7 @@ def get_upcoming_matches():
         "Chennai Super Kings": [
             {"name": "M. A. Chidambaram Stadium", "city": "Chennai", "pitch_type": "Spin friendly", "weather": "Clear"}
         ],
-        "Royal Challengers Bangalore": [
+        "Royal Challengers Bengaluru": [
             {"name": "M. Chinnaswamy Stadium", "city": "Bangalore", "pitch_type": "Batting friendly", "weather": "Clear"}
         ],
         "Kolkata Knight Riders": [
@@ -113,7 +113,7 @@ def get_upcoming_matches():
             "points": 14,
             "position": 2
         },
-        "Royal Challengers Bangalore": {
+        "Royal Challengers Bengaluru": {
             "batting": 9.0, 
             "bowling": 7.5, 
             "fielding": 8.0, 
@@ -555,9 +555,9 @@ def get_upcoming_matches():
         
         # Add head-to-head stats
         head_to_head_wins = {
-            'Mumbai Indians': {'Chennai Super Kings': 20, 'Royal Challengers Bangalore': 17},
-            'Chennai Super Kings': {'Mumbai Indians': 15, 'Royal Challengers Bangalore': 19},
-            'Royal Challengers Bangalore': {'Mumbai Indians': 12, 'Chennai Super Kings': 10},
+            'Mumbai Indians': {'Chennai Super Kings': 20, 'Royal Challengers Bengaluru': 17},
+            'Chennai Super Kings': {'Mumbai Indians': 15, 'Royal Challengers Bengaluru': 19},
+            'Royal Challengers Bengaluru': {'Mumbai Indians': 12, 'Chennai Super Kings': 10},
             # Add more team combinations as needed
         }
         
