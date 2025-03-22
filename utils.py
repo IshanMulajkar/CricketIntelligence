@@ -38,169 +38,239 @@ def format_team_name(team_name):
 
 def get_upcoming_matches():
     """
-    Get a list of upcoming cricket matches for the next 5 days
+    Get a list of upcoming IPL 2025 matches for the next 5 days
     In a real implementation, this would fetch from a cricket API
     
     Returns:
         list: List of dictionaries containing upcoming match details
     """
-    # Generate upcoming matches for the next 5 days
+    # Generate upcoming IPL matches for the next 5 days
     matches = []
     
-    # Major cricket teams with their home venues
-    team_home_venues = {
-        "India": [
-            {"name": "Eden Gardens", "city": "Kolkata", "pitch_type": "Balanced", "weather": "Clear"},
-            {"name": "Wankhede Stadium", "city": "Mumbai", "pitch_type": "Batting friendly", "weather": "Clear"},
+    # IPL teams with their home venues
+    ipl_venues = {
+        "Mumbai Indians": [
+            {"name": "Wankhede Stadium", "city": "Mumbai", "pitch_type": "Batting friendly", "weather": "Clear"}
+        ],
+        "Chennai Super Kings": [
+            {"name": "M. A. Chidambaram Stadium", "city": "Chennai", "pitch_type": "Spin friendly", "weather": "Clear"}
+        ],
+        "Royal Challengers Bangalore": [
             {"name": "M. Chinnaswamy Stadium", "city": "Bangalore", "pitch_type": "Batting friendly", "weather": "Clear"}
         ],
-        "Australia": [
-            {"name": "Melbourne Cricket Ground", "city": "Melbourne", "pitch_type": "Balanced", "weather": "Clear"},
-            {"name": "Sydney Cricket Ground", "city": "Sydney", "pitch_type": "Batting friendly", "weather": "Cloudy"},
-            {"name": "Adelaide Oval", "city": "Adelaide", "pitch_type": "Bowling friendly", "weather": "Clear"}
+        "Kolkata Knight Riders": [
+            {"name": "Eden Gardens", "city": "Kolkata", "pitch_type": "Balanced", "weather": "Clear"}
         ],
-        "England": [
-            {"name": "Lord's", "city": "London", "pitch_type": "Bowling friendly", "weather": "Cloudy"},
-            {"name": "The Oval", "city": "London", "pitch_type": "Batting friendly", "weather": "Light rain"},
-            {"name": "Edgbaston", "city": "Birmingham", "pitch_type": "Balanced", "weather": "Cloudy"}
+        "Delhi Capitals": [
+            {"name": "Arun Jaitley Stadium", "city": "Delhi", "pitch_type": "Balanced", "weather": "Clear"}
         ],
-        "New Zealand": [
-            {"name": "Eden Park", "city": "Auckland", "pitch_type": "Balanced", "weather": "Cloudy"},
-            {"name": "Basin Reserve", "city": "Wellington", "pitch_type": "Bowling friendly", "weather": "Cloudy"},
-            {"name": "Hagley Oval", "city": "Christchurch", "pitch_type": "Bowling friendly", "weather": "Clear"}
+        "Punjab Kings": [
+            {"name": "IS Bindra Stadium", "city": "Mohali", "pitch_type": "Batting friendly", "weather": "Clear"}
         ],
-        "Pakistan": [
-            {"name": "National Stadium", "city": "Karachi", "pitch_type": "Batting friendly", "weather": "Clear"},
-            {"name": "Gaddafi Stadium", "city": "Lahore", "pitch_type": "Balanced", "weather": "Clear"},
-            {"name": "Rawalpindi Cricket Stadium", "city": "Rawalpindi", "pitch_type": "Balanced", "weather": "Clear"}
+        "Rajasthan Royals": [
+            {"name": "Sawai Mansingh Stadium", "city": "Jaipur", "pitch_type": "Batting friendly", "weather": "Clear"}
         ],
-        "South Africa": [
-            {"name": "Wanderers Stadium", "city": "Johannesburg", "pitch_type": "Batting friendly", "weather": "Clear"},
-            {"name": "Newlands", "city": "Cape Town", "pitch_type": "Bowling friendly", "weather": "Clear"},
-            {"name": "SuperSport Park", "city": "Centurion", "pitch_type": "Balanced", "weather": "Clear"}
+        "Sunrisers Hyderabad": [
+            {"name": "Rajiv Gandhi International Stadium", "city": "Hyderabad", "pitch_type": "Balanced", "weather": "Clear"}
         ],
-        "West Indies": [
-            {"name": "Kensington Oval", "city": "Bridgetown", "pitch_type": "Batting friendly", "weather": "Clear"},
-            {"name": "Sabina Park", "city": "Kingston", "pitch_type": "Balanced", "weather": "Clear"},
-            {"name": "Queen's Park Oval", "city": "Port of Spain", "pitch_type": "Balanced", "weather": "Light rain"}
+        "Gujarat Titans": [
+            {"name": "Narendra Modi Stadium", "city": "Ahmedabad", "pitch_type": "Balanced", "weather": "Clear"}
         ],
-        "Sri Lanka": [
-            {"name": "R. Premadasa Stadium", "city": "Colombo", "pitch_type": "Spin friendly", "weather": "Light rain"},
-            {"name": "Galle International Stadium", "city": "Galle", "pitch_type": "Spin friendly", "weather": "Clear"},
-            {"name": "Pallekele International Cricket Stadium", "city": "Kandy", "pitch_type": "Balanced", "weather": "Clear"}
-        ],
-        "Bangladesh": [
-            {"name": "Shere Bangla National Stadium", "city": "Dhaka", "pitch_type": "Spin friendly", "weather": "Clear"},
-            {"name": "Zahur Ahmed Chowdhury Stadium", "city": "Chittagong", "pitch_type": "Spin friendly", "weather": "Clear"},
-            {"name": "Sylhet International Cricket Stadium", "city": "Sylhet", "pitch_type": "Balanced", "weather": "Clear"}
-        ],
-        "Afghanistan": [
-            {"name": "Sharjah Cricket Stadium", "city": "Sharjah", "pitch_type": "Batting friendly", "weather": "Clear"},
-            {"name": "Dubai International Cricket Stadium", "city": "Dubai", "pitch_type": "Balanced", "weather": "Clear"},
-            {"name": "Greater Noida Sports Complex Ground", "city": "Greater Noida", "pitch_type": "Balanced", "weather": "Clear"}
-        ],
-        "Zimbabwe": [
-            {"name": "Harare Sports Club", "city": "Harare", "pitch_type": "Balanced", "weather": "Clear"},
-            {"name": "Queens Sports Club", "city": "Bulawayo", "pitch_type": "Balanced", "weather": "Clear"}
-        ],
-        "Ireland": [
-            {"name": "Malahide Cricket Club", "city": "Dublin", "pitch_type": "Bowling friendly", "weather": "Light rain"},
-            {"name": "Clontarf Cricket Club", "city": "Dublin", "pitch_type": "Bowling friendly", "weather": "Cloudy"}
+        "Lucknow Super Giants": [
+            {"name": "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium", "city": "Lucknow", "pitch_type": "Balanced", "weather": "Clear"}
         ]
     }
     
-    # Generate realistic matches
+    # IPL team strengths
+    ipl_team_strengths = {
+        "Mumbai Indians": {"batting": 9.0, "bowling": 8.5, "fielding": 8.5, "form": "Good"},
+        "Chennai Super Kings": {"batting": 8.5, "bowling": 8.5, "fielding": 8.0, "form": "Good"},
+        "Royal Challengers Bangalore": {"batting": 9.0, "bowling": 7.5, "fielding": 8.0, "form": "Average"},
+        "Kolkata Knight Riders": {"batting": 8.0, "bowling": 8.0, "fielding": 8.5, "form": "Good"},
+        "Delhi Capitals": {"batting": 8.0, "bowling": 8.0, "fielding": 8.0, "form": "Average"},
+        "Punjab Kings": {"batting": 8.5, "bowling": 7.5, "fielding": 7.5, "form": "Poor"},
+        "Rajasthan Royals": {"batting": 8.0, "bowling": 8.0, "fielding": 8.0, "form": "Average"},
+        "Sunrisers Hyderabad": {"batting": 7.5, "bowling": 8.5, "fielding": 8.0, "form": "Good"},
+        "Gujarat Titans": {"batting": 8.0, "bowling": 8.5, "fielding": 8.5, "form": "Average"},
+        "Lucknow Super Giants": {"batting": 8.0, "bowling": 8.0, "fielding": 8.0, "form": "Average"}
+    }
+    
+    # Generate realistic IPL match schedule
     today = datetime.now()
     
-    # Predefined matches for the next 5 days
-    predefined_matches = [
+    # For IPL 2025 schedule (March-May 2025)
+    # Assuming today is in the IPL season; otherwise, we'd set a specific start date
+    
+    # Predefined IPL matches for the next 5 days
+    ipl_matches = [
         {
-            'team1': "India", 
-            'team2': "Bangladesh", 
+            'team1': "Mumbai Indians", 
+            'team2': "Chennai Super Kings", 
             'date': today.strftime('%Y-%m-%d'),
-            'venue': "Eden Gardens", 
-            'city': "Kolkata",
-            'match_type': "ODI",
-            'pitch_type': "Balanced",
-            'weather': "Clear"
-        },
-        {
-            'team1': "Australia", 
-            'team2': "England", 
-            'date': (today + timedelta(days=1)).strftime('%Y-%m-%d'),
-            'venue': "Melbourne Cricket Ground", 
-            'city': "Melbourne",
-            'match_type': "Test",
-            'pitch_type': "Balanced",
-            'weather': "Clear"
-        },
-        {
-            'team1': "South Africa", 
-            'team2': "New Zealand", 
-            'date': (today + timedelta(days=1)).strftime('%Y-%m-%d'),
-            'venue': "SuperSport Park", 
-            'city': "Centurion",
-            'match_type': "T20I",
-            'pitch_type': "Balanced",
-            'weather': "Clear"
-        },
-        {
-            'team1': "Pakistan", 
-            'team2': "Sri Lanka", 
-            'date': (today + timedelta(days=2)).strftime('%Y-%m-%d'),
-            'venue': "National Stadium", 
-            'city': "Karachi",
-            'match_type': "ODI",
-            'pitch_type': "Batting friendly",
-            'weather': "Clear"
-        },
-        {
-            'team1': "West Indies", 
-            'team2': "Afghanistan", 
-            'date': (today + timedelta(days=2)).strftime('%Y-%m-%d'),
-            'venue': "Kensington Oval", 
-            'city': "Bridgetown",
-            'match_type': "T20I",
-            'pitch_type': "Batting friendly",
-            'weather': "Clear"
-        },
-        {
-            'team1': "Zimbabwe", 
-            'team2': "Ireland", 
-            'date': (today + timedelta(days=3)).strftime('%Y-%m-%d'),
-            'venue': "Harare Sports Club", 
-            'city': "Harare",
-            'match_type': "ODI",
-            'pitch_type': "Balanced",
-            'weather': "Clear"
-        },
-        {
-            'team1': "Bangladesh", 
-            'team2': "New Zealand", 
-            'date': (today + timedelta(days=4)).strftime('%Y-%m-%d'),
-            'venue': "Shere Bangla National Stadium", 
-            'city': "Dhaka",
-            'match_type': "Test",
-            'pitch_type': "Spin friendly",
-            'weather': "Clear"
-        },
-        {
-            'team1': "India", 
-            'team2': "Australia", 
-            'date': (today + timedelta(days=5)).strftime('%Y-%m-%d'),
             'venue': "Wankhede Stadium", 
             'city': "Mumbai",
-            'match_type': "ODI",
+            'match_type': "T20",
             'pitch_type': "Batting friendly",
-            'weather': "Clear"
+            'weather': "Clear",
+            'tournament': "IPL 2025",
+            'match_number': 1
+        },
+        {
+            'team1': "Royal Challengers Bangalore", 
+            'team2': "Kolkata Knight Riders", 
+            'date': today.strftime('%Y-%m-%d'),
+            'venue': "M. Chinnaswamy Stadium", 
+            'city': "Bangalore",
+            'match_type': "T20",
+            'pitch_type': "Batting friendly",
+            'weather': "Clear",
+            'tournament': "IPL 2025",
+            'match_number': 2
+        },
+        {
+            'team1': "Delhi Capitals", 
+            'team2': "Gujarat Titans", 
+            'date': (today + timedelta(days=1)).strftime('%Y-%m-%d'),
+            'venue': "Arun Jaitley Stadium", 
+            'city': "Delhi",
+            'match_type': "T20",
+            'pitch_type': "Balanced",
+            'weather': "Clear",
+            'tournament': "IPL 2025",
+            'match_number': 3
+        },
+        {
+            'team1': "Punjab Kings", 
+            'team2': "Lucknow Super Giants", 
+            'date': (today + timedelta(days=1)).strftime('%Y-%m-%d'),
+            'venue': "IS Bindra Stadium", 
+            'city': "Mohali",
+            'match_type': "T20",
+            'pitch_type': "Batting friendly",
+            'weather': "Clear",
+            'tournament': "IPL 2025",
+            'match_number': 4
+        },
+        {
+            'team1': "Sunrisers Hyderabad", 
+            'team2': "Rajasthan Royals", 
+            'date': (today + timedelta(days=2)).strftime('%Y-%m-%d'),
+            'venue': "Rajiv Gandhi International Stadium", 
+            'city': "Hyderabad",
+            'match_type': "T20",
+            'pitch_type': "Balanced",
+            'weather': "Clear",
+            'tournament': "IPL 2025",
+            'match_number': 5
+        },
+        {
+            'team1': "Chennai Super Kings", 
+            'team2': "Royal Challengers Bangalore", 
+            'date': (today + timedelta(days=2)).strftime('%Y-%m-%d'),
+            'venue': "M. A. Chidambaram Stadium", 
+            'city': "Chennai",
+            'match_type': "T20",
+            'pitch_type': "Spin friendly",
+            'weather': "Clear",
+            'tournament': "IPL 2025",
+            'match_number': 6
+        },
+        {
+            'team1': "Kolkata Knight Riders", 
+            'team2': "Mumbai Indians", 
+            'date': (today + timedelta(days=3)).strftime('%Y-%m-%d'),
+            'venue': "Eden Gardens", 
+            'city': "Kolkata",
+            'match_type': "T20",
+            'pitch_type': "Balanced",
+            'weather': "Light rain",
+            'tournament': "IPL 2025",
+            'match_number': 7
+        },
+        {
+            'team1': "Gujarat Titans", 
+            'team2': "Sunrisers Hyderabad", 
+            'date': (today + timedelta(days=3)).strftime('%Y-%m-%d'),
+            'venue': "Narendra Modi Stadium", 
+            'city': "Ahmedabad",
+            'match_type': "T20",
+            'pitch_type': "Balanced",
+            'weather': "Clear",
+            'tournament': "IPL 2025",
+            'match_number': 8
+        },
+        {
+            'team1': "Lucknow Super Giants", 
+            'team2': "Rajasthan Royals", 
+            'date': (today + timedelta(days=4)).strftime('%Y-%m-%d'),
+            'venue': "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium", 
+            'city': "Lucknow",
+            'match_type': "T20",
+            'pitch_type': "Balanced",
+            'weather': "Clear",
+            'tournament': "IPL 2025",
+            'match_number': 9
+        },
+        {
+            'team1': "Delhi Capitals", 
+            'team2': "Punjab Kings", 
+            'date': (today + timedelta(days=4)).strftime('%Y-%m-%d'),
+            'venue': "Arun Jaitley Stadium", 
+            'city': "Delhi",
+            'match_type': "T20",
+            'pitch_type': "Balanced",
+            'weather': "Clear",
+            'tournament': "IPL 2025",
+            'match_number': 10
         }
     ]
     
-    # Add all predefined matches
-    matches.extend(predefined_matches)
+    # Add special match conditions based on venue and weather
+    for match in ipl_matches:
+        # Adjust pitch conditions based on recent usage
+        if match['match_number'] > 5:
+            # Pitches might deteriorate as tournament progresses
+            if match['pitch_type'] == "Batting friendly":
+                match['pitch_type'] = "Balanced"
+            elif match['pitch_type'] == "Balanced":
+                match['pitch_type'] = "Spin friendly"
+        
+        # Add match time
+        match_number = match['match_number']
+        if match_number % 2 == 0:
+            match['time'] = "19:30 IST"  # Evening match
+        else:
+            match['time'] = "15:30 IST"  # Afternoon match
+        
+        # Add team form and key players
+        team1 = match['team1']
+        team2 = match['team2']
+        
+        match['team1_form'] = ipl_team_strengths[team1]['form']
+        match['team2_form'] = ipl_team_strengths[team2]['form']
+        
+        # Add current points for teams (simulated)
+        match['team1_points'] = min(14, match['match_number'] // 2)
+        match['team2_points'] = min(12, match['match_number'] // 3)
+        
+        # Add head-to-head stats
+        head_to_head_wins = {
+            'Mumbai Indians': {'Chennai Super Kings': 20, 'Royal Challengers Bangalore': 17},
+            'Chennai Super Kings': {'Mumbai Indians': 15, 'Royal Challengers Bangalore': 19},
+            'Royal Challengers Bangalore': {'Mumbai Indians': 12, 'Chennai Super Kings': 10},
+            # Add more team combinations as needed
+        }
+        
+        team1_wins = head_to_head_wins.get(team1, {}).get(team2, 5)
+        team2_wins = head_to_head_wins.get(team2, {}).get(team1, 5)
+        
+        match['head_to_head'] = f"{team1} {team1_wins} - {team2_wins} {team2}"
     
-    # Sort matches by date
-    matches.sort(key=lambda x: x['date'])
+    # Add all IPL matches
+    matches.extend(ipl_matches)
+    
+    # Sort matches by date and match number
+    matches.sort(key=lambda x: (x['date'], x.get('match_number', 0)))
     
     return matches
 
