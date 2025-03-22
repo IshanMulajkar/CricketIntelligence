@@ -4,6 +4,7 @@ import numpy as np
 import json
 from datetime import datetime, timedelta
 import time
+from utils import get_upcoming_matches
 
 def get_current_odds():
     """

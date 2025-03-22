@@ -368,9 +368,9 @@ class DataProcessor:
         # Create training dataset with features and target
         training_data = self.processed_data.copy()
         
-        # Create target variable (1 if team1 wins, 0 if team2 wins, 0.5 if no result)
+        # Create target variable as a categorical (0 for team2 wins, 1 for team1 wins, 2 for no result/draw)
         training_data['target'] = training_data.apply(
-            lambda row: 1 if row['result'] == row['team1'] else 0 if row['result'] == row['team2'] else 0.5,
+            lambda row: 1 if row['result'] == row['team1'] else 0 if row['result'] == row['team2'] else 2,
             axis=1
         )
         
