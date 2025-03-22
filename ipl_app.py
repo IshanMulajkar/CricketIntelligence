@@ -19,35 +19,64 @@ st.set_page_config(
     layout="wide"
 )
 
-# Set up some custom styling for IPL theme
+# Set up some custom styling for IPL theme with a more modern and commercial look
 st.markdown("""
 <style>
+    /* Modern dark theme with glowing IPL orange accents */
     .main {
-        background-color: #0f172a;
+        background-color: #0c0c16;
+        color: #ffffff;
+    }
+    .stTextInput, .stSelectbox, .stMultiselect, .stDateInput, .stTimeInput {
+        background-color: #1f1f2e !important;
+        border: 1px solid #3d3d5c !important;
+        border-radius: 8px !important;
+    }
+    button {
+        border-radius: 8px !important;
     }
     .st-emotion-cache-1v0mbdj {
-        background-color: #1e293b;
+        background-color: #1a1a2e;
     }
     .st-emotion-cache-1wrcr25 {
-        background-color: #334155;
+        background-color: #252547;
     }
     h1, h2, h3 {
-        color: #f97316 !important;
+        color: #ff6b00 !important;
+        text-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+        font-weight: 700 !important;
+        letter-spacing: 0.5px;
     }
+    /* Premium glossy tabs with gradient hover */
     .stTabs [data-baseweb="tab-list"] {
         gap: 2px;
+        background-color: #16162d;
+        padding: 5px 5px 0 5px;
+        border-radius: 12px 12px 0 0;
     }
     .stTabs [data-baseweb="tab"] {
         height: 50px;
         white-space: nowrap;
-        background-color: #334155;
-        border-radius: 4px 4px 0 0;
-        padding: 0px 16px;
+        background-color: #252547;
+        border-radius: 10px 10px 0 0;
+        padding: 0px 20px;
         color: white;
+        font-weight: 600;
+        margin-right: 2px;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 107, 0, 0.1);
+        border-bottom: none;
+    }
+    .stTabs [data-baseweb="tab"]:hover {
+        background: linear-gradient(to bottom, #252547, #363662);
+        box-shadow: 0 0 10px rgba(255, 107, 0, 0.2);
     }
     .stTabs [aria-selected="true"] {
-        background-color: #f97316 !important;
+        background: linear-gradient(to bottom, #ff6b00, #ff3c00) !important;
         color: white !important;
+        box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+        transform: translateY(-3px);
+    }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -107,29 +136,75 @@ with tab1:
     # Chat interface
     st.subheader("Ask me about IPL 2025 matches and betting insights")
     
-    # Display chat history
+    # Display chat history with a premium, modern design
     chat_container = st.container()
     with chat_container:
         for message in st.session_state.chat_history:
             if message["role"] == "user":
                 st.markdown(f"""
-                <div style="background-color: #0f172a; padding: 10px; border-radius: 10px; margin-bottom: 10px;">
-                    <p style="color: white; font-weight: bold;">You:</p>
-                    <p style="color: white;">{message['content']}</p>
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+                    <div style="background: linear-gradient(135deg, #37379e, #2d2d6b); 
+                                padding: 12px 20px; 
+                                border-radius: 20px 20px 4px 20px; 
+                                max-width: 80%; 
+                                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+                        <p style="color: white; margin: 0; white-space: pre-wrap;">{message['content']}</p>
+                        <p style="color: rgba(255,255,255,0.5); 
+                                  font-size: 11px; 
+                                  text-align: right; 
+                                  margin: 4px 0 0 0;">You</p>
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
             else:
+                # Split message content at newlines to better format lists
+                content = message['content'].replace('\n- ', '\n• ')
+                content = content.replace('\n\n', '<br><br>')
+                
                 st.markdown(f"""
-                <div style="background-color: #334155; padding: 10px; border-radius: 10px; margin-bottom: 10px;">
-                    <p style="color: #f97316; font-weight: bold;">IPL Assistant:</p>
-                    <p style="color: white;">{message['content']}</p>
+                <div style="display: flex; margin-bottom: 12px;">
+                    <div style="background: linear-gradient(135deg, #ff6b00, #ff3c00); 
+                                width: 40px; 
+                                height: 40px; 
+                                border-radius: 50%; 
+                                display: flex; 
+                                align-items: center; 
+                                justify-content: center; 
+                                margin-right: 12px;
+                                flex-shrink: 0;
+                                box-shadow: 0 3px 10px rgba(255, 107, 0, 0.4);">
+                        <span style="color: white; font-weight: bold; font-size: 18px;">🏏</span>
+                    </div>
+                    <div style="background: linear-gradient(180deg, #202040, #151530); 
+                                padding: 15px 20px; 
+                                border-radius: 4px 20px 20px 20px; 
+                                max-width: 85%;
+                                box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+                                border: 1px solid rgba(255, 107, 0, 0.1);">
+                        <p style="color: #ff6b00; font-weight: bold; margin: 0 0 6px 0;">IPL Expert</p>
+                        <p style="color: white; margin: 0; white-space: pre-wrap;">{content}</p>
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
     
-    # User input
-    user_query = st.text_input("Type your question here (e.g., 'Who will win Mumbai Indians vs Chennai Super Kings?')", key="user_input")
+    # Add a divider
+    st.markdown("""
+    <div style="height: 1px; background: linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,107,0,0.3), rgba(255,255,255,0.1)); margin: 20px 0 15px 0;"></div>
+    """, unsafe_allow_html=True)
     
-    if st.button("Send", type="primary") and user_query:
+    # User input with a modern, premium design
+    col1, col2 = st.columns([6, 1])
+    with col1:
+        user_query = st.text_input(
+            "Ask me about IPL matches, teams, players, or betting odds...", 
+            key="user_input", 
+            placeholder="E.g. 'Who will win Mumbai Indians vs Chennai Super Kings?'"
+        )
+    
+    with col2:
+        send_button = st.button("🚀 Ask", type="primary")
+    
+    if (send_button or user_query and st.session_state.get('_last_query') != user_query) and user_query:
         # Add user message to chat history
         st.session_state.chat_history.append({"role": "user", "content": user_query})
         

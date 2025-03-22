@@ -1,11 +1,25 @@
 import re
 import nltk
+import os
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import numpy as np
 import string
 import random
+
+# Download required NLTK resources
+try:
+    # Create a directory for NLTK data
+    nltk_data_dir = os.path.join(os.path.expanduser('~'), 'nltk_data')
+    os.makedirs(nltk_data_dir, exist_ok=True)
+    
+    # Download required resources
+    nltk.download('punkt', download_dir=nltk_data_dir)
+    nltk.download('stopwords', download_dir=nltk_data_dir)
+    nltk.download('wordnet', download_dir=nltk_data_dir)
+except Exception as e:
+    print(f"Error downloading NLTK resources: {e}")
 
 class ChatbotProcessor:
     def __init__(self, prediction_model):
@@ -17,7 +31,7 @@ class ChatbotProcessor:
         """
         self.model = prediction_model
         
-        # Try to download NLTK resources, handle offline scenario
+        # Try to initialize NLTK components with error handling
         try:
             nltk.data.find('tokenizers/punkt')
         except LookupError:
@@ -129,11 +143,18 @@ class ChatbotProcessor:
         # Tokenize with a simple space-based approach instead of NLTK to avoid errors
         tokens = text.split()
         
-        # Remove stop words and lemmatize
+        # Remove stop words and apply simple stemming
         processed_tokens = []
         for token in tokens:
             if token not in self.stop_words:
-                processed_tokens.append(self.lemmatizer.lemmatize(token))
+                # Apply a simplified version of lemmatization for common word endings
+                if token.endswith('ing'):
+                    token = token[:-3]
+                elif token.endswith('ed') and len(token) > 3:
+                    token = token[:-2]
+                elif token.endswith('s') and not token.endswith('ss') and len(token) > 2:
+                    token = token[:-1]
+                processed_tokens.append(token)
         
         return processed_tokens
 
