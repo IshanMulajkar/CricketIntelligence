@@ -68,6 +68,7 @@ class ChatbotProcessor:
         
         # Define common team names and variations
         self.cricket_teams = {
+            # International teams
             'india': ['india', 'indian', 'ind', 'men in blue', 'team india', 'bcci'],
             'australia': ['australia', 'australian', 'aus', 'aussies', 'baggy greens'],
             'england': ['england', 'english', 'eng', 'three lions'],
@@ -79,7 +80,19 @@ class ChatbotProcessor:
             'bangladesh': ['bangladesh', 'ban', 'bd', 'tigers'],
             'afghanistan': ['afghanistan', 'afg'],
             'zimbabwe': ['zimbabwe', 'zim', 'chevrons'],
-            'ireland': ['ireland', 'ire']
+            'ireland': ['ireland', 'ire'],
+            
+            # IPL 2025 teams
+            'Mumbai Indians': ['mumbai', 'mumbai indians', 'mi', 'mumbai team', 'paltan'],
+            'Chennai Super Kings': ['chennai', 'chennai super kings', 'csk', 'chennai team', 'super kings'],
+            'Royal Challengers Bengaluru': ['bangalore', 'bengaluru', 'royal challengers', 'rcb', 'bengaluru team', 'royal challengers bengaluru'],
+            'Kolkata Knight Riders': ['kolkata', 'kolkata knight riders', 'kkr', 'knight riders', 'kolkata team'],
+            'Delhi Capitals': ['delhi', 'delhi capitals', 'dc', 'capitals', 'delhi team'],
+            'Punjab Kings': ['punjab', 'punjab kings', 'pbks', 'punjab team', 'kings'],
+            'Rajasthan Royals': ['rajasthan', 'rajasthan royals', 'rr', 'royals', 'rajasthan team'],
+            'Sunrisers Hyderabad': ['hyderabad', 'sunrisers', 'sunrisers hyderabad', 'srh', 'hyderabad team'],
+            'Gujarat Titans': ['gujarat', 'gujarat titans', 'gt', 'titans', 'gujarat team'],
+            'Lucknow Super Giants': ['lucknow', 'lucknow super giants', 'lsg', 'super giants', 'lucknow team']
         }
         
         # Define responses for basic intents
