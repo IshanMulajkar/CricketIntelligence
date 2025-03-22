@@ -127,8 +127,8 @@ class ChatbotProcessor:
         # Remove punctuation
         text = ''.join([char for char in text if char not in string.punctuation])
         
-        # Tokenize
-        tokens = word_tokenize(text)
+        # Tokenize with a simple space-based approach instead of NLTK to avoid errors
+        tokens = text.split()
         
         # Remove stop words and lemmatize
         processed_tokens = []
@@ -334,11 +334,14 @@ class ChatbotProcessor:
         
         # Generate team statistics response
         if not hasattr(self.model, 'team_stats'):
-            return f"I don't have detailed statistics for {team.title()} at the moment."
+            return f"I don't have detailed statistics for {team} at the moment."
         
         team_stats = {'win_percentage': np.random.uniform(40, 70)}
         
-        response = f"Here are the statistics for {team.title()}:\n\n"
+        # Safely format the team name
+        team_name = team.title() if team else "Unknown Team"
+        
+        response = f"Here are the statistics for {team_name}:\n\n"
         
         # Win percentage
         response += f"- Overall win percentage: {team_stats['win_percentage']:.1f}%\n"
@@ -389,7 +392,11 @@ class ChatbotProcessor:
         Returns:
             str: Response comparing the teams
         """
-        response = f"Here's a comparison between {team1.title()} and {team2.title()}:\n\n"
+        # Safely format team names
+        team1_name = team1.title() if team1 else "Unknown Team 1"
+        team2_name = team2.title() if team2 else "Unknown Team 2"
+        
+        response = f"Here's a comparison between {team1_name} and {team2_name}:\n\n"
         
         # Generate realistic head-to-head record
         total_matches = np.random.randint(20, 50)
@@ -398,8 +405,8 @@ class ChatbotProcessor:
         no_results = total_matches - team1_wins - team2_wins
         
         response += f"Head-to-head record (last {total_matches} matches):\n"
-        response += f"- {team1.title()} wins: {team1_wins}\n"
-        response += f"- {team2.title()} wins: {team2_wins}\n"
+        response += f"- {team1_name} wins: {team1_wins}\n"
+        response += f"- {team2_name} wins: {team2_wins}\n"
         response += f"- No results/draws: {no_results}\n\n"
         
         # Recent form comparison
@@ -409,16 +416,16 @@ class ChatbotProcessor:
         team2_form = np.random.choice(form_options, p=form_weights)
         
         response += f"Recent form:\n"
-        response += f"- {team1.title()}: {team1_form}\n"
-        response += f"- {team2.title()}: {team2_form}\n\n"
+        response += f"- {team1_name}: {team1_form}\n"
+        response += f"- {team2_name}: {team2_form}\n\n"
         
         # Win percentages
         team1_win_pct = np.random.uniform(40, 70)
         team2_win_pct = np.random.uniform(40, 70)
         
         response += f"Overall win percentage:\n"
-        response += f"- {team1.title()}: {team1_win_pct:.1f}%\n"
-        response += f"- {team2.title()}: {team2_win_pct:.1f}%\n\n"
+        response += f"- {team1_name}: {team1_win_pct:.1f}%\n"
+        response += f"- {team2_name}: {team2_win_pct:.1f}%\n\n"
         
         # Team strengths comparison
         response += "Comparative strengths:\n"
@@ -426,7 +433,7 @@ class ChatbotProcessor:
         aspects = ["Batting", "Bowling", "Fielding", "Spin bowling", "Pace bowling"]
         for aspect in aspects:
             comparison = np.random.choice(["stronger", "slightly stronger", "comparable", "slightly weaker", "weaker"])
-            response += f"- {aspect}: {team1.title()} is {comparison} than {team2.title()}\n"
+            response += f"- {aspect}: {team1_name} is {comparison} than {team2_name}\n"
         
         return response
 

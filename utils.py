@@ -81,18 +81,158 @@ def get_upcoming_matches():
         ]
     }
     
-    # IPL team strengths
+    # IPL team strengths with key players
     ipl_team_strengths = {
-        "Mumbai Indians": {"batting": 9.0, "bowling": 8.5, "fielding": 8.5, "form": "Good"},
-        "Chennai Super Kings": {"batting": 8.5, "bowling": 8.5, "fielding": 8.0, "form": "Good"},
-        "Royal Challengers Bangalore": {"batting": 9.0, "bowling": 7.5, "fielding": 8.0, "form": "Average"},
-        "Kolkata Knight Riders": {"batting": 8.0, "bowling": 8.0, "fielding": 8.5, "form": "Good"},
-        "Delhi Capitals": {"batting": 8.0, "bowling": 8.0, "fielding": 8.0, "form": "Average"},
-        "Punjab Kings": {"batting": 8.5, "bowling": 7.5, "fielding": 7.5, "form": "Poor"},
-        "Rajasthan Royals": {"batting": 8.0, "bowling": 8.0, "fielding": 8.0, "form": "Average"},
-        "Sunrisers Hyderabad": {"batting": 7.5, "bowling": 8.5, "fielding": 8.0, "form": "Good"},
-        "Gujarat Titans": {"batting": 8.0, "bowling": 8.5, "fielding": 8.5, "form": "Average"},
-        "Lucknow Super Giants": {"batting": 8.0, "bowling": 8.0, "fielding": 8.0, "form": "Average"}
+        "Mumbai Indians": {
+            "batting": 9.0, 
+            "bowling": 8.5, 
+            "fielding": 8.5, 
+            "form": "Good",
+            "key_players": [
+                {"name": "Rohit Sharma", "role": "Batsman", "batting_avg": 30.2, "strike_rate": 135.2},
+                {"name": "Jasprit Bumrah", "role": "Bowler", "wickets": 18, "economy": 6.8},
+                {"name": "Suryakumar Yadav", "role": "Batsman", "batting_avg": 42.5, "strike_rate": 165.3},
+                {"name": "Hardik Pandya", "role": "All-rounder", "batting_avg": 33.2, "bowling_avg": 28.5}
+            ],
+            "last_5": ["W", "W", "L", "W", "W"],
+            "points": 14,
+            "position": 1
+        },
+        "Chennai Super Kings": {
+            "batting": 8.5, 
+            "bowling": 8.5, 
+            "fielding": 8.0, 
+            "form": "Good",
+            "key_players": [
+                {"name": "MS Dhoni", "role": "Wicket-keeper", "batting_avg": 28.7, "strike_rate": 140.2},
+                {"name": "Ravindra Jadeja", "role": "All-rounder", "batting_avg": 32.5, "bowling_avg": 24.8},
+                {"name": "Ruturaj Gaikwad", "role": "Batsman", "batting_avg": 45.2, "strike_rate": 138.5},
+                {"name": "Deepak Chahar", "role": "Bowler", "wickets": 14, "economy": 7.8}
+            ],
+            "last_5": ["W", "W", "W", "L", "W"],
+            "points": 14,
+            "position": 2
+        },
+        "Royal Challengers Bangalore": {
+            "batting": 9.0, 
+            "bowling": 7.5, 
+            "fielding": 8.0, 
+            "form": "Average",
+            "key_players": [
+                {"name": "Virat Kohli", "role": "Batsman", "batting_avg": 48.5, "strike_rate": 142.5},
+                {"name": "Faf du Plessis", "role": "Batsman", "batting_avg": 38.7, "strike_rate": 148.2},
+                {"name": "Glenn Maxwell", "role": "All-rounder", "batting_avg": 35.8, "bowling_avg": 28.3},
+                {"name": "Mohammed Siraj", "role": "Bowler", "wickets": 15, "economy": 8.2}
+            ],
+            "last_5": ["W", "L", "W", "L", "L"],
+            "points": 10,
+            "position": 5
+        },
+        "Kolkata Knight Riders": {
+            "batting": 8.0, 
+            "bowling": 8.0, 
+            "fielding": 8.5, 
+            "form": "Good",
+            "key_players": [
+                {"name": "Shreyas Iyer", "role": "Batsman", "batting_avg": 36.5, "strike_rate": 134.8},
+                {"name": "Andre Russell", "role": "All-rounder", "batting_avg": 28.7, "bowling_avg": 25.2},
+                {"name": "Sunil Narine", "role": "All-rounder", "batting_avg": 22.5, "bowling_avg": 22.8},
+                {"name": "Varun Chakravarthy", "role": "Bowler", "wickets": 16, "economy": 7.2}
+            ],
+            "last_5": ["W", "W", "L", "W", "W"],
+            "points": 12,
+            "position": 3
+        },
+        "Delhi Capitals": {
+            "batting": 8.0, 
+            "bowling": 8.0, 
+            "fielding": 8.0, 
+            "form": "Average",
+            "key_players": [
+                {"name": "Rishabh Pant", "role": "Wicket-keeper", "batting_avg": 34.2, "strike_rate": 147.3},
+                {"name": "Axar Patel", "role": "All-rounder", "batting_avg": 25.6, "bowling_avg": 26.8},
+                {"name": "David Warner", "role": "Batsman", "batting_avg": 42.1, "strike_rate": 142.5},
+                {"name": "Kuldeep Yadav", "role": "Bowler", "wickets": 13, "economy": 8.1}
+            ],
+            "last_5": ["L", "W", "L", "W", "L"],
+            "points": 8,
+            "position": 6
+        },
+        "Punjab Kings": {
+            "batting": 8.5, 
+            "bowling": 7.5, 
+            "fielding": 7.5, 
+            "form": "Poor",
+            "key_players": [
+                {"name": "Shikhar Dhawan", "role": "Batsman", "batting_avg": 40.2, "strike_rate": 136.5},
+                {"name": "Kagiso Rabada", "role": "Bowler", "wickets": 17, "economy": 8.5},
+                {"name": "Sam Curran", "role": "All-rounder", "batting_avg": 28.5, "bowling_avg": 30.2},
+                {"name": "Arshdeep Singh", "role": "Bowler", "wickets": 15, "economy": 7.9}
+            ],
+            "last_5": ["L", "L", "W", "L", "L"],
+            "points": 6,
+            "position": 8
+        },
+        "Rajasthan Royals": {
+            "batting": 8.0, 
+            "bowling": 8.0, 
+            "fielding": 8.0, 
+            "form": "Average",
+            "key_players": [
+                {"name": "Sanju Samson", "role": "Wicket-keeper", "batting_avg": 38.5, "strike_rate": 145.2},
+                {"name": "Jos Buttler", "role": "Batsman", "batting_avg": 45.2, "strike_rate": 152.8},
+                {"name": "Ravichandran Ashwin", "role": "Bowler", "wickets": 12, "economy": 7.5},
+                {"name": "Yuzvendra Chahal", "role": "Bowler", "wickets": 19, "economy": 7.8}
+            ],
+            "last_5": ["W", "L", "W", "L", "W"],
+            "points": 10,
+            "position": 4
+        },
+        "Sunrisers Hyderabad": {
+            "batting": 7.5, 
+            "bowling": 8.5, 
+            "fielding": 8.0, 
+            "form": "Good",
+            "key_players": [
+                {"name": "Kane Williamson", "role": "Batsman", "batting_avg": 38.7, "strike_rate": 132.5},
+                {"name": "Bhuvneshwar Kumar", "role": "Bowler", "wickets": 13, "economy": 7.8},
+                {"name": "T Natarajan", "role": "Bowler", "wickets": 15, "economy": 8.2},
+                {"name": "Abhishek Sharma", "role": "All-rounder", "batting_avg": 32.5, "bowling_avg": 28.9}
+            ],
+            "last_5": ["W", "W", "L", "W", "L"],
+            "points": 10,
+            "position": 5
+        },
+        "Gujarat Titans": {
+            "batting": 8.0, 
+            "bowling": 8.5, 
+            "fielding": 8.5, 
+            "form": "Average",
+            "key_players": [
+                {"name": "Shubman Gill", "role": "Batsman", "batting_avg": 42.8, "strike_rate": 138.5},
+                {"name": "Rashid Khan", "role": "Bowler", "wickets": 20, "economy": 6.5},
+                {"name": "Mohammed Shami", "role": "Bowler", "wickets": 18, "economy": 8.0},
+                {"name": "David Miller", "role": "Batsman", "batting_avg": 34.2, "strike_rate": 142.7}
+            ],
+            "last_5": ["W", "L", "W", "L", "W"],
+            "points": 10,
+            "position": 4
+        },
+        "Lucknow Super Giants": {
+            "batting": 8.0, 
+            "bowling": 8.0, 
+            "fielding": 8.0, 
+            "form": "Average",
+            "key_players": [
+                {"name": "KL Rahul", "role": "Batsman", "batting_avg": 44.2, "strike_rate": 136.8},
+                {"name": "Avesh Khan", "role": "Bowler", "wickets": 14, "economy": 8.3},
+                {"name": "Nicholas Pooran", "role": "Wicket-keeper", "batting_avg": 36.5, "strike_rate": 153.2},
+                {"name": "Krunal Pandya", "role": "All-rounder", "batting_avg": 26.8, "bowling_avg": 29.5}
+            ],
+            "last_5": ["L", "W", "L", "W", "L"],
+            "points": 8,
+            "position": 7
+        }
     }
     
     # Generate realistic IPL match schedule
