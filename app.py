@@ -10,7 +10,7 @@ from ml_models import CricketPredictor
 from chatbot import ChatbotProcessor
 from visualization import create_match_prediction_chart, create_player_performance_chart
 from odds_fetcher import get_current_odds
-from utils import format_team_name, get_upcoming_matches
+from utils import format_team_name, get_upcoming_matches, calculate_kelly_criterion
 
 # Set page configuration
 st.set_page_config(
@@ -120,17 +120,72 @@ with tab2:
                 team1 = match_option['team1']
                 team2 = match_option['team2']
                 venue = match_option.get('venue', 'Neutral')
+                city = match_option.get('city', '')
+                match_type = match_option.get('match_type', 'ODI')
                 
-                # Additional match factors
+                # Get match-specific pitch type and weather forecast
+                default_pitch_type = match_option.get('pitch_type', 'Balanced')
+                default_weather = match_option.get('weather', 'Clear')
+                
+                # Additional match factors - select relevant defaults based on match
+                suggested_factors = []
+                
+                # Add home advantage if venue is home for one of teams
+                if venue in ["Eden Gardens", "Wankhede Stadium", "M. Chinnaswamy Stadium"] and team1 == "India":
+                    suggested_factors.append("Home advantage")
+                elif venue in ["Melbourne Cricket Ground", "Sydney Cricket Ground"] and team1 == "Australia":
+                    suggested_factors.append("Home advantage")
+                elif venue in ["Lord's", "The Oval"] and team1 == "England":
+                    suggested_factors.append("Home advantage")
+                # Similar checks for team2
+                if venue in ["Eden Gardens", "Wankhede Stadium", "M. Chinnaswamy Stadium"] and team2 == "India":
+                    suggested_factors.append("Home advantage")
+                elif venue in ["Melbourne Cricket Ground", "Sydney Cricket Ground"] and team2 == "Australia":
+                    suggested_factors.append("Home advantage")
+                elif venue in ["Lord's", "The Oval"] and team2 == "England":
+                    suggested_factors.append("Home advantage")
+                
+                # Add recent form by default
+                suggested_factors.append("Recent form")
+                
+                # Add head-to-head history
+                suggested_factors.append("Head-to-head history")
+                
+                # Remove duplicates
+                suggested_factors = list(dict.fromkeys(suggested_factors))
+                
+                # Display multiselect with suggested factors pre-selected
                 factors = st.multiselect(
                     "Select additional factors to consider",
-                    ["Home advantage", "Recent form", "Head-to-head history", "Player injuries"]
+                    ["Home advantage", "Recent form", "Head-to-head history", "Player injuries", 
+                     "Pitch conditions", "Weather impact", "Tournament importance"],
+                    default=suggested_factors
                 )
+                
+                # Display match information
+                st.markdown(f"""
+                **Match Information:**
+                - **Type:** {match_type}
+                - **Venue:** {venue}, {city}
+                - **Date:** {match_option['date']}
+                """)
         
         with col2:
             st.subheader("Match conditions")
-            weather = st.selectbox("Weather forecast", ["Clear", "Cloudy", "Light rain", "Heavy rain"])
-            pitch_type = st.selectbox("Pitch type", ["Batting friendly", "Bowling friendly", "Balanced", "Spin friendly"])
+            
+            # Weather forecast with default from match data
+            weather = st.selectbox(
+                "Weather forecast", 
+                ["Clear", "Cloudy", "Light rain", "Heavy rain"], 
+                index=["Clear", "Cloudy", "Light rain", "Heavy rain"].index(default_weather)
+            )
+            
+            # Pitch type with default from match data
+            pitch_type = st.selectbox(
+                "Pitch type", 
+                ["Batting friendly", "Bowling friendly", "Balanced", "Spin friendly"],
+                index=["Batting friendly", "Bowling friendly", "Balanced", "Spin friendly"].index(default_pitch_type)
+            )
             
             # Generate prediction
             if st.button("Generate Prediction"):
@@ -176,40 +231,89 @@ with tab3:
     st.header("Current Betting Odds")
     
     if st.session_state.data_loaded:
+        # Get upcoming matches for consistent data across tabs
+        upcoming_matches = get_upcoming_matches()
+        
         # Fetch current betting odds
         with st.spinner("Fetching latest betting odds..."):
             try:
                 odds_data = get_current_odds()
                 
                 if odds_data:
-                    # Display odds in a table
+                    # Add date to display in the table
+                    for odds in odds_data:
+                        # Find the match in upcoming_matches to get additional data
+                        for match in upcoming_matches:
+                            if match['team1'] == odds['team1'] and match['team2'] == odds['team2']:
+                                odds['date'] = match['date']
+                                odds['venue'] = match.get('venue', 'Neutral')
+                                odds['city'] = match.get('city', '')
+                                odds['match_type'] = match.get('match_type', 'ODI')
+                                break
+                    
+                    # Display odds in a table with more information
                     st.subheader("Latest Match Odds")
                     odds_df = pd.DataFrame(odds_data)
                     
-                    # Format the dataframe
-                    formatted_df = odds_df[['match', 'team1', 'team1_odds', 'team2', 'team2_odds', 'draw_odds', 'source']]
+                    # Format the dataframe - include date and match type
+                    formatted_df = odds_df[['match', 'date', 'match_type', 'team1', 'team1_odds', 'team2', 'team2_odds', 'draw_odds', 'source']]
                     st.dataframe(formatted_df, use_container_width=True)
+                    
+                    # Group by date for better organization
+                    st.subheader("Upcoming Matches by Date")
+                    
+                    # Get unique dates
+                    unique_dates = sorted(list(set(odds_df['date'].tolist())))
+                    
+                    # Create tabs for each date
+                    date_tabs = st.tabs([f"{date}" for date in unique_dates])
+                    
+                    for i, date in enumerate(unique_dates):
+                        with date_tabs[i]:
+                            date_matches = odds_df[odds_df['date'] == date]
+                            st.write(f"**{len(date_matches)} matches on {date}**")
+                            
+                            # Create columns for each match
+                            match_cols = st.columns(min(3, len(date_matches)))
+                            
+                            for j, (_, match) in enumerate(date_matches.iterrows()):
+                                col_idx = j % len(match_cols)
+                                with match_cols[col_idx]:
+                                    st.write(f"**{match['team1']} vs {match['team2']}**")
+                                    st.write(f"*{match.get('match_type', 'ODI')} at {match.get('venue', 'TBD')}, {match.get('city', '')}*")
+                                    st.write(f"{match['team1']}: {match['team1_odds']}")
+                                    st.write(f"{match['team2']}: {match['team2_odds']}")
+                                    st.write(f"Draw: {match['draw_odds']}")
+                                    st.write(f"Source: {match['source']}")
                     
                     # Select a match for detailed odds analysis
                     selected_match = st.selectbox(
                         "Select a match for detailed odds analysis",
-                        options=odds_df['match'].tolist()
+                        options=odds_df['match'].tolist(),
+                        format_func=lambda x: f"{x} - {odds_df[odds_df['match'] == x]['date'].iloc[0]}"
                     )
                     
                     if selected_match:
                         match_data = odds_df[odds_df['match'] == selected_match].iloc[0]
                         
-                        # Compare with our prediction if model is trained
-                        if st.session_state.model_trained:
-                            st.subheader("Odds Analysis")
+                        # Display detailed match information
+                        col1, col2 = st.columns(2)
+                        
+                        with col1:
+                            st.subheader("Match Details")
+                            st.write(f"**Date:** {match_data['date']}")
+                            st.write(f"**Venue:** {match_data.get('venue', 'TBD')}, {match_data.get('city', '')}")
+                            st.write(f"**Match Type:** {match_data.get('match_type', 'ODI')}")
+                            st.write(f"**Bookmaker:** {match_data['source']}")
+                            st.write(f"**Last Updated:** {match_data.get('last_updated', 'N/A')}")
+                        
+                        with col2:
+                            st.subheader("Odds")
+                            st.write(f"**{match_data['team1']}:** {match_data['team1_odds']}")
+                            st.write(f"**{match_data['team2']}:** {match_data['team2_odds']}")
+                            st.write(f"**Draw/No Result:** {match_data['draw_odds']}")
                             
-                            # Extract teams from the match
-                            team1, team2 = match_data['team1'], match_data['team2']
-                            
-                            # Get our model's prediction
-                            prediction = model.predict_match(team1, team2)
-                            
-                            # Calculate implied probabilities from odds
+                            # Display implied probabilities
                             team1_implied_prob = (1 / match_data['team1_odds']) * 100
                             team2_implied_prob = (1 / match_data['team2_odds']) * 100
                             draw_implied_prob = (1 / match_data['draw_odds']) * 100 if match_data['draw_odds'] > 0 else 0
@@ -219,6 +323,33 @@ with tab3:
                             team1_implied_prob = (team1_implied_prob / total_implied) * 100
                             team2_implied_prob = (team2_implied_prob / total_implied) * 100
                             draw_implied_prob = (draw_implied_prob / total_implied) * 100
+                            
+                            st.write("**Implied Probabilities:**")
+                            st.write(f"- {match_data['team1']}: {team1_implied_prob:.1f}%")
+                            st.write(f"- {match_data['team2']}: {team2_implied_prob:.1f}%")
+                            st.write(f"- Draw/No Result: {draw_implied_prob:.1f}%")
+                        
+                        # Compare with our prediction if model is trained
+                        if st.session_state.model_trained:
+                            st.subheader("Odds Analysis")
+                            
+                            # Extract teams from the match
+                            team1, team2 = match_data['team1'], match_data['team2']
+                            
+                            # Get match-specific data for better prediction
+                            venue = match_data.get('venue', 'Neutral')
+                            weather = None
+                            pitch_type = None
+                            
+                            # Find additional match info from upcoming_matches
+                            for match in upcoming_matches:
+                                if match['team1'] == team1 and match['team2'] == team2:
+                                    weather = match.get('weather', 'Clear')
+                                    pitch_type = match.get('pitch_type', 'Balanced')
+                                    break
+                            
+                            # Get our model's prediction with more details
+                            prediction = model.predict_match(team1, team2, venue, weather, pitch_type)
                             
                             # Calculate value bets
                             team1_value = prediction['team1_win_prob'] - team1_implied_prob
@@ -251,6 +382,40 @@ with tab3:
                                 
                                 comparison_df = pd.DataFrame(comparison_data)
                                 st.dataframe(comparison_df, use_container_width=True)
+                                
+                                # Add a plot comparing probabilities
+                                fig = go.Figure()
+                                
+                                fig.add_trace(go.Bar(
+                                    x=['Model', 'Bookmaker'],
+                                    y=[prediction['team1_win_prob'], team1_implied_prob],
+                                    name=f"{team1} Win",
+                                    marker_color='#1f77b4'
+                                ))
+                                
+                                fig.add_trace(go.Bar(
+                                    x=['Model', 'Bookmaker'],
+                                    y=[prediction['team2_win_prob'], team2_implied_prob],
+                                    name=f"{team2} Win",
+                                    marker_color='#ff7f0e'
+                                ))
+                                
+                                fig.add_trace(go.Bar(
+                                    x=['Model', 'Bookmaker'],
+                                    y=[prediction['draw_prob'], draw_implied_prob],
+                                    name=f"Draw/No Result",
+                                    marker_color='#2ca02c'
+                                ))
+                                
+                                fig.update_layout(
+                                    title="Probability Comparison",
+                                    xaxis_title="Source",
+                                    yaxis_title="Probability (%)",
+                                    barmode='group',
+                                    yaxis=dict(range=[0, 100])
+                                )
+                                
+                                st.plotly_chart(fig, use_container_width=True)
                             
                             with col2:
                                 st.markdown("### Value Bet Analysis")
@@ -263,6 +428,11 @@ with tab3:
                                         st.success(f"✅ Potential value bet on {team1} to win")
                                         st.markdown(f"Our model gives {team1} a {prediction['team1_win_prob']:.1f}% chance to win, "
                                                    f"while the odds imply only {team1_implied_prob:.1f}%")
+                                        
+                                        # Show detailed Kelly criterion calculation
+                                        prob = prediction['team1_win_prob'] / 100
+                                        kelly_pct = calculate_kelly_criterion(prob, match_data['team1_odds'], 0.5)
+                                        st.markdown(f"**Kelly Criterion Recommendation:** Bet {kelly_pct:.1f}% of bankroll")
                                     else:
                                         st.warning(f"⚠️ Avoid betting on {team1} to win")
                                         st.markdown(f"The odds overvalue {team1}'s chances ({team1_implied_prob:.1f}% implied vs. "
@@ -273,6 +443,11 @@ with tab3:
                                         st.success(f"✅ Potential value bet on {team2} to win")
                                         st.markdown(f"Our model gives {team2} a {prediction['team2_win_prob']:.1f}% chance to win, "
                                                    f"while the odds imply only {team2_implied_prob:.1f}%")
+                                        
+                                        # Show detailed Kelly criterion calculation
+                                        prob = prediction['team2_win_prob'] / 100
+                                        kelly_pct = calculate_kelly_criterion(prob, match_data['team2_odds'], 0.5)
+                                        st.markdown(f"**Kelly Criterion Recommendation:** Bet {kelly_pct:.1f}% of bankroll")
                                     else:
                                         st.warning(f"⚠️ Avoid betting on {team2} to win")
                                         st.markdown(f"The odds overvalue {team2}'s chances ({team2_implied_prob:.1f}% implied vs. "
@@ -283,6 +458,11 @@ with tab3:
                                         st.success(f"✅ Potential value bet on Draw/No Result")
                                         st.markdown(f"Our model gives Draw/No Result a {prediction['draw_prob']:.1f}% chance, "
                                                    f"while the odds imply only {draw_implied_prob:.1f}%")
+                                        
+                                        # Show detailed Kelly criterion calculation
+                                        prob = prediction['draw_prob'] / 100
+                                        kelly_pct = calculate_kelly_criterion(prob, match_data['draw_odds'], 0.5)
+                                        st.markdown(f"**Kelly Criterion Recommendation:** Bet {kelly_pct:.1f}% of bankroll")
                                     else:
                                         st.warning(f"⚠️ Avoid betting on Draw/No Result")
                                         st.markdown(f"The odds overvalue Draw/No Result chances ({draw_implied_prob:.1f}% implied vs. "
@@ -292,6 +472,11 @@ with tab3:
                                     abs(team2_value) <= value_threshold and 
                                     abs(draw_value) <= value_threshold):
                                     st.info("No significant value bets found for this match. The bookmaker odds align with our model predictions.")
+                                    
+                                # Add bookmaker margin information
+                                bookmaker_margin = (1/match_data['team1_odds'] + 1/match_data['team2_odds'] + 1/match_data['draw_odds'] - 1) * 100
+                                st.markdown(f"**Bookmaker Margin:** {bookmaker_margin:.1f}%")
+                                st.caption("Lower margin means better value for bettors")
                 else:
                     st.error("No odds data available at the moment. Please try again later.")
             except Exception as e:

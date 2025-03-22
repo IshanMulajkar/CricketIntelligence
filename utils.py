@@ -38,53 +38,169 @@ def format_team_name(team_name):
 
 def get_upcoming_matches():
     """
-    Get a list of upcoming cricket matches
+    Get a list of upcoming cricket matches for the next 5 days
     In a real implementation, this would fetch from a cricket API
     
     Returns:
         list: List of dictionaries containing upcoming match details
     """
-    # Generate upcoming matches for the next 14 days
+    # Generate upcoming matches for the next 5 days
     matches = []
     
-    # Major cricket teams
-    teams = [
-        "India", "Australia", "England", "New Zealand", 
-        "Pakistan", "South Africa", "West Indies", "Sri Lanka",
-        "Bangladesh", "Afghanistan", "Zimbabwe", "Ireland"
-    ]
+    # Major cricket teams with their home venues
+    team_home_venues = {
+        "India": [
+            {"name": "Eden Gardens", "city": "Kolkata", "pitch_type": "Balanced", "weather": "Clear"},
+            {"name": "Wankhede Stadium", "city": "Mumbai", "pitch_type": "Batting friendly", "weather": "Clear"},
+            {"name": "M. Chinnaswamy Stadium", "city": "Bangalore", "pitch_type": "Batting friendly", "weather": "Clear"}
+        ],
+        "Australia": [
+            {"name": "Melbourne Cricket Ground", "city": "Melbourne", "pitch_type": "Balanced", "weather": "Clear"},
+            {"name": "Sydney Cricket Ground", "city": "Sydney", "pitch_type": "Batting friendly", "weather": "Cloudy"},
+            {"name": "Adelaide Oval", "city": "Adelaide", "pitch_type": "Bowling friendly", "weather": "Clear"}
+        ],
+        "England": [
+            {"name": "Lord's", "city": "London", "pitch_type": "Bowling friendly", "weather": "Cloudy"},
+            {"name": "The Oval", "city": "London", "pitch_type": "Batting friendly", "weather": "Light rain"},
+            {"name": "Edgbaston", "city": "Birmingham", "pitch_type": "Balanced", "weather": "Cloudy"}
+        ],
+        "New Zealand": [
+            {"name": "Eden Park", "city": "Auckland", "pitch_type": "Balanced", "weather": "Cloudy"},
+            {"name": "Basin Reserve", "city": "Wellington", "pitch_type": "Bowling friendly", "weather": "Cloudy"},
+            {"name": "Hagley Oval", "city": "Christchurch", "pitch_type": "Bowling friendly", "weather": "Clear"}
+        ],
+        "Pakistan": [
+            {"name": "National Stadium", "city": "Karachi", "pitch_type": "Batting friendly", "weather": "Clear"},
+            {"name": "Gaddafi Stadium", "city": "Lahore", "pitch_type": "Balanced", "weather": "Clear"},
+            {"name": "Rawalpindi Cricket Stadium", "city": "Rawalpindi", "pitch_type": "Balanced", "weather": "Clear"}
+        ],
+        "South Africa": [
+            {"name": "Wanderers Stadium", "city": "Johannesburg", "pitch_type": "Batting friendly", "weather": "Clear"},
+            {"name": "Newlands", "city": "Cape Town", "pitch_type": "Bowling friendly", "weather": "Clear"},
+            {"name": "SuperSport Park", "city": "Centurion", "pitch_type": "Balanced", "weather": "Clear"}
+        ],
+        "West Indies": [
+            {"name": "Kensington Oval", "city": "Bridgetown", "pitch_type": "Batting friendly", "weather": "Clear"},
+            {"name": "Sabina Park", "city": "Kingston", "pitch_type": "Balanced", "weather": "Clear"},
+            {"name": "Queen's Park Oval", "city": "Port of Spain", "pitch_type": "Balanced", "weather": "Light rain"}
+        ],
+        "Sri Lanka": [
+            {"name": "R. Premadasa Stadium", "city": "Colombo", "pitch_type": "Spin friendly", "weather": "Light rain"},
+            {"name": "Galle International Stadium", "city": "Galle", "pitch_type": "Spin friendly", "weather": "Clear"},
+            {"name": "Pallekele International Cricket Stadium", "city": "Kandy", "pitch_type": "Balanced", "weather": "Clear"}
+        ],
+        "Bangladesh": [
+            {"name": "Shere Bangla National Stadium", "city": "Dhaka", "pitch_type": "Spin friendly", "weather": "Clear"},
+            {"name": "Zahur Ahmed Chowdhury Stadium", "city": "Chittagong", "pitch_type": "Spin friendly", "weather": "Clear"},
+            {"name": "Sylhet International Cricket Stadium", "city": "Sylhet", "pitch_type": "Balanced", "weather": "Clear"}
+        ],
+        "Afghanistan": [
+            {"name": "Sharjah Cricket Stadium", "city": "Sharjah", "pitch_type": "Batting friendly", "weather": "Clear"},
+            {"name": "Dubai International Cricket Stadium", "city": "Dubai", "pitch_type": "Balanced", "weather": "Clear"},
+            {"name": "Greater Noida Sports Complex Ground", "city": "Greater Noida", "pitch_type": "Balanced", "weather": "Clear"}
+        ],
+        "Zimbabwe": [
+            {"name": "Harare Sports Club", "city": "Harare", "pitch_type": "Balanced", "weather": "Clear"},
+            {"name": "Queens Sports Club", "city": "Bulawayo", "pitch_type": "Balanced", "weather": "Clear"}
+        ],
+        "Ireland": [
+            {"name": "Malahide Cricket Club", "city": "Dublin", "pitch_type": "Bowling friendly", "weather": "Light rain"},
+            {"name": "Clontarf Cricket Club", "city": "Dublin", "pitch_type": "Bowling friendly", "weather": "Cloudy"}
+        ]
+    }
     
-    # Venues
-    venues = [
-        "Melbourne Cricket Ground", "Lord's", "Eden Gardens", 
-        "Wanderers Stadium", "Sydney Cricket Ground", 
-        "Sharjah Cricket Stadium", "Kensington Oval",
-        "R. Premadasa Stadium", "Dubai International Cricket Stadium"
-    ]
-    
-    # Generate matches
+    # Generate realistic matches
     today = datetime.now()
     
-    for i in range(14):
-        # 50% chance of having a match on any given day
-        if np.random.random() < 0.5:
-            match_date = today + timedelta(days=i)
-            
-            # Randomly select two different teams
-            match_teams = np.random.choice(teams, 2, replace=False)
-            team1, team2 = match_teams
-            
-            # Randomly select venue
-            venue = np.random.choice(venues)
-            
-            # Add to matches list
-            matches.append({
-                'team1': team1,
-                'team2': team2,
-                'date': match_date.strftime('%Y-%m-%d'),
-                'venue': venue,
-                'match_type': np.random.choice(["ODI", "T20I", "Test"], p=[0.4, 0.4, 0.2])
-            })
+    # Predefined matches for the next 5 days
+    predefined_matches = [
+        {
+            'team1': "India", 
+            'team2': "Bangladesh", 
+            'date': today.strftime('%Y-%m-%d'),
+            'venue': "Eden Gardens", 
+            'city': "Kolkata",
+            'match_type': "ODI",
+            'pitch_type': "Balanced",
+            'weather': "Clear"
+        },
+        {
+            'team1': "Australia", 
+            'team2': "England", 
+            'date': (today + timedelta(days=1)).strftime('%Y-%m-%d'),
+            'venue': "Melbourne Cricket Ground", 
+            'city': "Melbourne",
+            'match_type': "Test",
+            'pitch_type': "Balanced",
+            'weather': "Clear"
+        },
+        {
+            'team1': "South Africa", 
+            'team2': "New Zealand", 
+            'date': (today + timedelta(days=1)).strftime('%Y-%m-%d'),
+            'venue': "SuperSport Park", 
+            'city': "Centurion",
+            'match_type': "T20I",
+            'pitch_type': "Balanced",
+            'weather': "Clear"
+        },
+        {
+            'team1': "Pakistan", 
+            'team2': "Sri Lanka", 
+            'date': (today + timedelta(days=2)).strftime('%Y-%m-%d'),
+            'venue': "National Stadium", 
+            'city': "Karachi",
+            'match_type': "ODI",
+            'pitch_type': "Batting friendly",
+            'weather': "Clear"
+        },
+        {
+            'team1': "West Indies", 
+            'team2': "Afghanistan", 
+            'date': (today + timedelta(days=2)).strftime('%Y-%m-%d'),
+            'venue': "Kensington Oval", 
+            'city': "Bridgetown",
+            'match_type': "T20I",
+            'pitch_type': "Batting friendly",
+            'weather': "Clear"
+        },
+        {
+            'team1': "Zimbabwe", 
+            'team2': "Ireland", 
+            'date': (today + timedelta(days=3)).strftime('%Y-%m-%d'),
+            'venue': "Harare Sports Club", 
+            'city': "Harare",
+            'match_type': "ODI",
+            'pitch_type': "Balanced",
+            'weather': "Clear"
+        },
+        {
+            'team1': "Bangladesh", 
+            'team2': "New Zealand", 
+            'date': (today + timedelta(days=4)).strftime('%Y-%m-%d'),
+            'venue': "Shere Bangla National Stadium", 
+            'city': "Dhaka",
+            'match_type': "Test",
+            'pitch_type': "Spin friendly",
+            'weather': "Clear"
+        },
+        {
+            'team1': "India", 
+            'team2': "Australia", 
+            'date': (today + timedelta(days=5)).strftime('%Y-%m-%d'),
+            'venue': "Wankhede Stadium", 
+            'city': "Mumbai",
+            'match_type': "ODI",
+            'pitch_type': "Batting friendly",
+            'weather': "Clear"
+        }
+    ]
+    
+    # Add all predefined matches
+    matches.extend(predefined_matches)
+    
+    # Sort matches by date
+    matches.sort(key=lambda x: x['date'])
     
     return matches
 
