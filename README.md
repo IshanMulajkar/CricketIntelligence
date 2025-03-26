@@ -37,4 +37,4 @@ streamlit run ipl_app.py
 This application is for informational purposes only. Please gamble responsibly.
 
 ## Live Demo
-Try it live on Replit: [IPL 2025 Betting Analysis Assistant](https://replit.com/@YourUsername/ipl-betting-assistant)
+Try it live on Replit: [IPL 2025 Betting Analysis Assistant](https://replit.com/@IshanMulajkar/CricketIntelligence)
